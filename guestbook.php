@@ -55,6 +55,8 @@ $token = $_SESSION['token'];
             echo "<input type=\"hidden\" name=\"admin\" value=" . $_COOKIE['admin'] . "\">";
         } ?>
         <input type="hidden" name="token" value="<?php echo $token; ?>">
+        <input type="hidden" name="admin" value="1"/>
+        
         <input type="submit">
     </form>
     <hr/>
@@ -67,12 +69,16 @@ $token = $_SESSION['token'];
             echo "<h1 style='color:green;'>Bedankt! Het e-mailadres is geldig en opgeslagen.</h1>";
 
             $text = $_POST['text'];
-        $admin = isset($_POST['admin']) ? 1 : 0;
+        // $admin = isset($_POST['admin']) ? 1 : 0;
+
+
         if (userIsAdmin($conn)) {
+            $admin = 1;
             $color = $_POST['color'];
 
 
         } else {
+            $admin = 0;
             $color = 'red';
         }
         $conn->query(
