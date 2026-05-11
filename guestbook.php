@@ -48,7 +48,7 @@ $token = $_SESSION['token'];
 <div class="body-container">
     <h1 class="heading">Gastenboek 'De lekkage'</h1>
     <form action="guestbook.php" method="post">
-        Email: <input type="email" name="email"><br/>
+        Email: <input type="text" name="email"><br/>
         <input type="hidden" value="red" name="color">
         Bericht: <textarea name="text" minlength="4"></textarea><br/>
         <?php if (userIsAdmin($conn)) {
@@ -60,8 +60,13 @@ $token = $_SESSION['token'];
     <hr/>
     <?php
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
         $email = $_POST['email'];
-        $text = $_POST['text'];
+
+        if(filter_var($email,FILTER_VALIDATE_EMAIL)){
+            echo "<h1 style='color:green;'>Bedankt! Het e-mailadres is geldig en opgeslagen.</h1>";
+
+            $text = $_POST['text'];
         $admin = isset($_POST['admin']) ? 1 : 0;
         if (userIsAdmin($conn)) {
             $color = $_POST['color'];
@@ -74,6 +79,13 @@ $token = $_SESSION['token'];
             "INSERT INTO `entries`(`email`, `color`, `admin`, `text`) 
                                         VALUES ('$email', '$color', '$admin', '$text');"
         );
+
+        }else{
+            echo "<h1 style='color:red;'>Fout: Dit is geen geldig e-mailadres!</h1>";     
+            
+            }
+       
+        
     }
 
 
